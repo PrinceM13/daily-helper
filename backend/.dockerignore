@@ -1,0 +1,30 @@
+# Go build output
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.coverprofile
+coverage.*
+
+# Go module/vendor (optional if you don't vendor)
+vendor/
+go.work
+go.work.sum
+
+# Temporary / cache
+tmp/
+.DS_Store
+.vscode/
+*.log
+
+# Env
+.env
+.env.*
+
+# Git
+.git
+.gitignore

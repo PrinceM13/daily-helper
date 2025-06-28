@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+.pnpm/
+.pnpm-debug.log*
+.yarn/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Next.js build artifacts
+.next/
+out/
+build/
+dist/
+.turbo/
+.eslintcache
+
+# Test and coverage
+coverage/
+*.test.*
+
+# Misc
+.DS_Store
+.vscode/
+*.log
+*.tsbuildinfo
+next-env.d.ts
+
+# Env
+.env
+.env.*
+
+# Vercel deployment files
+.vercel
+
+# Git
+.git
+.gitignore
