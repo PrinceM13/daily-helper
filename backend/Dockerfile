@@ -4,8 +4,8 @@ FROM golang:1.20
 # Set working directory
 WORKDIR /app
 
-# Copy go.mod and go.sum first (for caching)
-COPY go.mod go.sum ./
+# Copy go.mod only (since go.sum doesn't exist yet)
+COPY go.mod ./
 
 # Download dependencies
 RUN go mod download
