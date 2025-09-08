@@ -27,8 +27,7 @@ docker compose up --build
 
 - Frontend: [http://localhost:3000](http://localhost:3000)
 - Backend: [http://localhost:8080](http://localhost:8080)
-
-  - Health check: [http://localhost:8080/health](http://localhost:8080/health)
+- Health check: [http://localhost:8080/health](http://localhost:8080/health)
 
 ### 4. Environment Variables
 
@@ -101,14 +100,13 @@ Response: OK
 ## 🧰 Troubleshooting
 
 - ❗ If you see Turbopack errors:
+- Try deleting `.next` and restarting:
 
-  - Try deleting `.next` and restarting:
-
-    ```bash
-    rm -rf .next
-    docker compose down
-    docker compose up --build
-    ```
+  ```bash
+  rm -rf .next
+  docker compose down
+  docker compose up --build
+  ```
 
 - Make sure you’re using the correct Node version (e.g. via nvm):
 
