@@ -5,7 +5,6 @@
 /build
 /.vercel
 .DS_Store
-.vscode/
 *.pem
 *.log
 
