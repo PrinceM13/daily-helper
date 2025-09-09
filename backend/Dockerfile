@@ -14,6 +14,6 @@ RUN go mod download
 COPY . .
 
 # Build or run directly (depends on your approach)
-CMD ["go", "run", "main.go"]
+CMD ["go", "run", "/app/cmd/daily-helper/main.go"]
 
 # Or for production, build binary and run that
