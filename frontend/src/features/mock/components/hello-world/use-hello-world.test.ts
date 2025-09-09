@@ -1,5 +1,30 @@
-describe("Basic math sanity check", () => {
-  it("1 + 2 should equal 3", () => {
-    expect(1 + 2).toBe(3);
+import { act, renderHook } from "@testing-library/react";
+import { useHelloWorld } from "./use-hello-world";
+
+describe("useHelloWorld", () => {
+  test("should initialize with count = 0", () => {
+    const { result } = renderHook(() => useHelloWorld());
+    expect(result.current.count).toBe(0);
+  });
+
+  test("should increment the count", () => {
+    const { result } = renderHook(() => useHelloWorld());
+
+    act(() => {
+      result.current.increment();
+    });
+
+    expect(result.current.count).toBe(1);
+  });
+
+  test("should reset the count", () => {
+    const { result } = renderHook(() => useHelloWorld());
+
+    act(() => {
+      result.current.increment();
+      result.current.reset();
+    });
+
+    expect(result.current.count).toBe(0);
   });
 });

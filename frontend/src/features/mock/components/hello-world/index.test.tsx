@@ -1,29 +1,34 @@
-describe("Basic math sanity check", () => {
-  it("1 + 2 should equal 3", () => {
-    expect(1 + 2).toBe(3);
+import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import HelloWorld from "./index";
+
+describe("HelloWorld UI", () => {
+  let user: ReturnType<typeof userEvent.setup>;
+  let incrementButton: HTMLElement;
+  let resetButton: HTMLElement;
+  let count: HTMLElement;
+
+  beforeEach(() => {
+    render(<HelloWorld />);
+    user = userEvent.setup({ delay: 100 }); // 100ms between each event
+    incrementButton = screen.getByText("Increment");
+    resetButton = screen.getByText("Reset");
+    count = screen.getByTestId("count");
+  });
+
+  it("shows initial UI state", () => {
+    expect(count).toHaveTextContent("Count: 0");
+  });
+
+  it("updates UI when increment button clicked", async () => {
+    await user.click(incrementButton);
+    expect(count).toHaveTextContent("Count: 1");
+  });
+
+  it("updates UI when reset button clicked", async () => {
+    await user.click(incrementButton); // bump count to 1 first
+    await user.click(resetButton); // then reset
+    expect(count).toHaveTextContent("Count: 0");
   });
 });
-
-// import "@testing-library/jest-dom";
-// import { render, screen, fireEvent } from "@testing-library/react";
-// import HelloWorld from "./index";
-
-// describe("HelloWorld UI", () => {
-//   it("renders with initial count", () => {
-//     render(<HelloWorld />);
-//     expect(screen.getByTestId("count")).toHaveTextContent("Count: 0");
-//   });
-
-//   it("increments when button clicked", () => {
-//     render(<HelloWorld />);
-//     fireEvent.click(screen.getByText("Increment"));
-//     expect(screen.getByTestId("count")).toHaveTextContent("Count: 1");
-//   });
-
-//   it("resets when button clicked", () => {
-//     render(<HelloWorld />);
-//     fireEvent.click(screen.getByText("Increment"));
-//     fireEvent.click(screen.getByText("Reset"));
-//     expect(screen.getByTestId("count")).toHaveTextContent("Count: 0");
-//   });
-// });
