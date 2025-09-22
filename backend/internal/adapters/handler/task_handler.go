@@ -30,7 +30,7 @@ func (h *TaskHandler) GetTasks(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
 
-	tasks, totalCount, err := h.service.GetTasks(page, limit)
+	tasks, totalCount, err := h.service.ListTasks(page, limit)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -48,12 +48,16 @@ func (h *TaskHandler) GetTasks(c *gin.Context) {
 
 func (h *TaskHandler) GetTaskByID(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	task, err := h.service.GetTaskByID(id)
+	task, err := h.service.RetrieveTaskByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, task)
+}
+
+func (h *TaskHandler) CreateTask(c *gin.Context) {
+	// bind JSON and call service.CreateTask...
 }
 
 func (h *TaskHandler) UpdateTask(c *gin.Context) {
@@ -63,7 +67,7 @@ func (h *TaskHandler) UpdateTask(c *gin.Context) {
 func (h *TaskHandler) DeleteTask(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	deletedTask, err := h.service.DeleteTask(id)
+	deletedTask, err := h.service.RemoveTask(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return

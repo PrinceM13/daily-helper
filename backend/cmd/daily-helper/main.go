@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/PrinceM13/daily-helper/internal/adapters/handler"
@@ -18,7 +19,6 @@ func main() {
 		port = "8080" // Default port if not specified
 	}
 
-	// Environment
 	env := os.Getenv("ENV")
 	if env == "" {
 		env = "development"
@@ -29,7 +29,10 @@ func main() {
 	healthHandler.RegisterRoutes(server)
 
 	// Task management
-	taskRepo := repository.NewInMemoryTaskRepo()
+	taskRepo, err := repository.NewTaskRepo()
+	if err != nil {
+		log.Fatalf("Failed to create task repository: %v", err)
+	}
 	taskService := application.NewTaskService(taskRepo)
 	taskHandler := handler.NewTaskHandler(taskService)
 	taskHandler.RegisterRoutes(server)

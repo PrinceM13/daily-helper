@@ -59,3 +59,25 @@ Key points for Clean Architecture:
 5. Cmd (/cmd/daily-helper/main.go)
    - Only wires everything together.
    - Creates repository → service → handler → routes → starts server.
+
+<!-- Hexagonal Style -->
+
+/daily-helper
+├── cmd/
+│ └── main.go // The application entry point (composition root)
+├── internal/
+│ ├── adapters/
+│ │ ├── handler/ // Inbound adapter for HTTP requests
+│ │ │ └── task_handler.go
+│ │ └── repository/ // Outbound adapters for data persistence
+│ │ ├── postgres/
+│ │ │ └── task_repository.go // Concrete implementation for PostgreSQL
+│ │ └── inmemory/
+│ │ └── task_repository.go // Concrete implementation for in-memory
+│ ├── application/
+│ │ └── task_service.go // The concrete implementation of your business logic
+│ ├── domain/
+│ │ └── task.go // Core business entity and value objects
+│ └── ports/
+│ ├── task_repository.go // Interfaces for repositories (data access)
+│ └── task_service.go // Interfaces for the service layer

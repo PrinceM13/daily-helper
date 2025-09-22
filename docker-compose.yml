@@ -6,7 +6,9 @@ services:
     expose:
       - "${BACKEND_PORT}" # use ports: "${BACKEND_PORT}" if you want to expose it outside Docker
     environment:
+      - ENV=${ENV}
       - PORT=${BACKEND_PORT}
+      - TASK_REPO=${TASK_REPO}
     volumes:
       - ./backend:/app
     working_dir: /app
