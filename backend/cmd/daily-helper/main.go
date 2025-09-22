@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/PrinceM13/daily-helper/internal/handler"
-	"github.com/PrinceM13/daily-helper/internal/repository"
-	"github.com/PrinceM13/daily-helper/internal/service"
+	"github.com/PrinceM13/daily-helper/internal/adapters/handler"
+	"github.com/PrinceM13/daily-helper/internal/adapters/repository"
+	"github.com/PrinceM13/daily-helper/internal/application"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,17 +18,19 @@ func main() {
 		port = "8080" // Default port if not specified
 	}
 
-	// Health check
+	// Environment
 	env := os.Getenv("ENV")
 	if env == "" {
 		env = "development"
 	}
+
+	// Health check
 	healthHandler := handler.NewHealthHandler("1.0.0", env)
 	healthHandler.RegisterRoutes(server)
 
 	// Task management
-	taskRepo := repository.NewTaskRepo()
-	taskService := service.NewTaskService(taskRepo)
+	taskRepo := repository.NewInMemoryTaskRepo()
+	taskService := application.NewTaskService(taskRepo)
 	taskHandler := handler.NewTaskHandler(taskService)
 	taskHandler.RegisterRoutes(server)
 

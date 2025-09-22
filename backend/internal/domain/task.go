@@ -1,11 +1,7 @@
 package domain
 
 type Task struct {
-	ID        int    `json:"id"`
-	Title     string `json:"title"`
-	Completed bool   `json:"completed"`
-}
-
-func (t *Task) MarkCompleted() {
-	t.Completed = true
+	ID        int     `json:"id"`
+	Title     *string `json:"title"`
+	Completed *bool   `json:"completed"`
 }

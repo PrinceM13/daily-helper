@@ -4,16 +4,16 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/PrinceM13/daily-helper/internal/service"
+	"github.com/PrinceM13/daily-helper/internal/ports"
 	"github.com/gin-gonic/gin"
 )
 
 type TaskHandler struct {
-	Service *service.TaskService
+	service ports.TaskService
 }
 
-func NewTaskHandler(s *service.TaskService) *TaskHandler {
-	return &TaskHandler{Service: s}
+func NewTaskHandler(s ports.TaskService) *TaskHandler {
+	return &TaskHandler{service: s}
 }
 
 func (h *TaskHandler) RegisterRoutes(r *gin.Engine) {
@@ -30,7 +30,7 @@ func (h *TaskHandler) GetTasks(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
 
-	tasks, totalCount, err := h.Service.GetTasks(page, limit)
+	tasks, totalCount, err := h.service.GetTasks(page, limit)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -48,7 +48,7 @@ func (h *TaskHandler) GetTasks(c *gin.Context) {
 
 func (h *TaskHandler) GetTaskByID(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	task, err := h.Service.GetTaskByID(id)
+	task, err := h.service.GetTaskByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -62,9 +62,15 @@ func (h *TaskHandler) UpdateTask(c *gin.Context) {
 
 func (h *TaskHandler) DeleteTask(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	if err := h.Service.DeleteTask(id); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+
+	deletedTask, err := h.service.DeleteTask(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "deleted"})
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "deleted",
+		"data":    deletedTask,
+	})
 }
